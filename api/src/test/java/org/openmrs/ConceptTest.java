@@ -1120,6 +1120,7 @@ public class ConceptTest {
 	 */
 	@Test
 	public void hasName_shouldReturnTrueIfLocaleIsNullButNameExists()
+
 	{
 		Concept concept = new Concept();
 		concept.addName(new ConceptName("Test Concept", new Locale("en"))) ;
