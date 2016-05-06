@@ -18,6 +18,7 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 import java.util.Locale;
 import java.util.Set;
 
@@ -30,11 +31,11 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.ConceptNameType;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-
+import org.openmrs.test.BaseContextSensitiveTest;
 /**
  * Behavior-driven tests of the Concept class.
  */
-public class ConceptTest {
+public class ConceptTest extends BaseContextSensitiveTest  {
 	
 	final static String NAME_PATTERN = "[a-z]*";
 	
@@ -1178,5 +1179,25 @@ public class ConceptTest {
 		mappings = c.getConceptMappings();
 		Assert.assertTrue(mappings.contains(c2));
 		Assert.assertEquals(1, mappings.size());
+	}
+
+	@Test
+	public void findPossibleValues_shouldReturnListOfConceptsFromMatchingResults() throws Exception{
+		Concept concept = new Concept(1);
+		concept.addName(new ConceptName("findPossibleValueTest", Context.getLocale()));
+		concept.addDescription(new ConceptDescription("en desc", Context.getLocale()));
+		
+		List<Concept> expectedConcepts = new Vector<Concept>();
+		
+		concept = Context.getConceptService().saveConcept(concept);
+		expectedConcepts.add(concept);
+		Concept newConcept = new Concept(2);
+		newConcept.addName(new ConceptName("New Test Concept", Context.getLocale()));
+		newConcept.addDescription(new ConceptDescription("new desc", Context.getLocale()));
+		newConcept = Context.getConceptService().saveConcept(newConcept);
+		
+		List<Concept> resultConcepts = newConcept.findPossibleValues("findPossibleValueTest");
+		//System.out.println("Concept: "+resultConcepts.get(0).getName().getName());
+		Assert.assertEquals(expectedConcepts, resultConcepts);
 	}
 }
