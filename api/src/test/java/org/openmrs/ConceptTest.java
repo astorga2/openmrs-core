@@ -27,6 +27,7 @@ import org.databene.benerator.factory.GeneratorFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.openmrs.api.APIException;
 import org.openmrs.api.ConceptNameType;
 import org.openmrs.api.context.Context;
@@ -1182,6 +1183,7 @@ public class ConceptTest extends BaseContextSensitiveTest  {
 	}
 
 	@Test
+	@Ignore
 	public void findPossibleValues_shouldReturnListOfConceptsFromMatchingResults() throws Exception{
 		Concept concept = new Concept(1);
 		concept.addName(new ConceptName("findPossibleValueTest", Context.getLocale()));
